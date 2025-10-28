@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg {{ type == 'success' ? 'bg-green-500' : 'bg-red-500' }} text-white animate-slideIn"
+     data-toast
+     data-auto-close="4000">
+    
+    {% if type == 'success' %}
+        {# CheckCircle icon SVG #}
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+    {% else %}
+        {# AlertCircle icon SVG #}
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+    {% endif %}
+    
+    <span>{{ message }}</span>
+    
+    <button data-toast-close class="ml-2">
+        {# X icon SVG #}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+</div>
+
+<script>
+    // JavaScript to handle toast functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const toast = document.querySelector('[data-toast]');
+        
+        if (toast) {
+            const autoClose = toast.dataset.autoClose;
+            
+            // Auto-close after specified time
+            if (autoClose) {
+                setTimeout(() => {
+                    closeToast(toast);
+                }, parseInt(autoClose));
+            }
+            
+            // Close button handler
+            const closeBtn = toast.querySelector('[data-toast-close]');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    closeToast(toast);
+                });
+            }
+        }
+    });
+    
+    function closeToast(toast) {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }
+</script>
+
+<style>
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .animate-slideIn {
+        animation: slideIn 0.3s ease-out;
+    }
+</style>
+
+</body>
+</html>
